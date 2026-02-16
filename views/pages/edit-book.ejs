@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Buku</title>
+
+  <!-- AOS (Animasi scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef1f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 28px;
+      width: 430px;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 27px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      color: #444;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cfd4df;
+      border-radius: 9px;
+      font-size: 15px;
+      background: #f8f9fc;
+      transition: 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #4f7cff;
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(79,124,255,0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 20px;
+      background: #4f7cff;
+      border: none;
+      border-radius: 9px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: #3b68e0;
+      transform: translateY(-2px);
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 18px;
+      text-align: center;
+      text-decoration: none;
+      color: black;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container" data-aos="fade-up">
+    <h1 data-aos="fade-down">Edit Buku</h1>
+
+    <form id="editForm">
+
+      <label>Judul Buku</label>
+      <input type="text" id="title" value="<%= book.title %>" required>
+
+      <label>Penulis</label>
+      <input type="text" id="author" value="<%= book.author %>">
+
+      <label>Rating</label>
+      <select id="rating">
+        <option value="1" <%= book.rating == 1 ? "selected" : "" %>>1</option>
+        <option value="2" <%= book.rating == 2 ? "selected" : "" %>>2</option>
+        <option value="3" <%= book.rating == 3 ? "selected" : "" %>>3 - Biasa</option>
+        <option value="4" <%= book.rating == 4 ? "selected" : "" %>>4</option>
+        <option value="5" <%= book.rating == 5 ? "selected" : "" %>>5 - Sangat Bagus</option>
+      </select>
+
+      <label>Cover URL</label>
+      <input type="text" id="cover_url" value="<%= book.cover_url %>">
+
+      <label>Catatan</label>
+      <textarea id="notes"><%= book.notes %></textarea>
+
+      <label>Tanggal Selesai Membaca</label>
+      <input type="date" id="read_date" value="<%= book.read_date %>">
+
+      <button type="button" id="btn">Simpan Perubahan</button>
+    </form>
+
+    <a href="/books" class="back-link" data-aos="fade-up" data-aos-delay="200">
+      ← Kembali ke daftar
+    </a>
+  </div>
+
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 900, once: true });</script>
+
+  <script>
+    const btn = document.getElementById("btn");
+
+    btn.addEventListener("click", async ()=> {
+
+      let title = document.getElementById('title').value;
+      let author = document.getElementById('author').value;
+      let rating = parseInt(document.getElementById('rating').value); 
+      let notes = document.getElementById('notes').value;
+      let read_date = document.getElementById('read_date').value;
+      let cover_url = document.getElementById('cover_url').value;
+
+      if (!rating) {
+        alert("Silakan pilih rating terlebih dahulu!");
+        return;
+      }
+
+      const res = await fetch(`/books/edit/<%= book.id %>`, {
+        method : 'PUT',
+        headers : { "Content-Type": "application/json" },
+        body : JSON.stringify({
+          title, author, rating, notes, read_date, cover_url
+        })
+      });
+
+      const respond = await res.json();
+
+      if (respond.status === "success") {
+        alert("Buku berhasil diupdate!");
+        window.location.href = "/books";    
+      } else {
+        alert("Gagal mengupdate buku.");
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Notes App</title>
+
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6c8cff, #4f7cff);
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 45px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 17px;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      color: #eef1ff;
+    }
+
+    .btn {
+      background: white;
+      color: #4f7cff;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s ease;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #eef1ff;
+      transform: translateY(-3px);
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #dce0ff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    
+    <h1 data-aos="fade-down" data-aos-duration="900">Book Notes App</h1>
+
+    <p data-aos="fade-up" data-aos-duration="1100">
+      Catat buku yang sudah kamu baca, simpan rating, catatan, dan tanggal selesai membaca.  
+      Semua data kamu tersimpan rapi dalam database.
+    </p>
+
+    <a href="/books" class="btn" 
+       data-aos="zoom-in"
+       data-aos-duration="1000"
+       data-aos-delay="200">
+       📚 Masuk ke Daftar Buku
+    </a>
+
+    <div class="footer" data-aos="fade" data-aos-duration="1400" data-aos-delay="400">
+      Dibuat untuk Capstone Project — Node.js & PostgreSQL
+    </div>
+
+  </div>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tambah Buku</title>
+
+  <style>
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: #eef1f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      width: 420px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 26px;
+      color: #222;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      color: #444;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cfd4df;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #f9fafc;
+      transition: .2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #4f7cff;
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79,124,255,0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 25px;
+      background: #4f7cff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    button:hover {
+      background: #3b68e0;
+      transform: translateY(-1px);
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #4f7cff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Tambah Buku</h1>
+
+    <form id="bookForm">
+      <label>Judul Buku</label>
+      <input type="text" id="title" required>
+
+      <label>Penulis</label>
+      <input type="text" id="author">
+
+      <label>Rating</label>
+      <select id="rating">
+        <option value="">Pilih Rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3 - Biasa</option>
+        <option value="4">4</option>
+        <option value="5">5 - Sangat Bagus</option>
+      </select>
+
+      <label>Cover URL</label>
+      <input type="text" id="cover_url">
+
+      <label>Catatan</label>
+      <textarea id="notes"></textarea>
+
+      <label>Tanggal Selesai Membaca</label>
+      <input type="date" id="read_date">
+
+      <button type="button" id="btn">Simpan</button>
+    </form>
+
+    <a href="/books" class="back-link">← Kembali ke daftar</a>
+  </div>
+
+  <script>
+    const btn = document.getElementById('btn');
+
+    btn.addEventListener('click', async () => {
+        let title = document.getElementById('title').value;
+        let author = document.getElementById('author').value;
+        let rating = parseInt(document.getElementById('rating').value);
+        let notes = document.getElementById('notes').value;
+        let read_date = document.getElementById('read_date').value;
+        let cover_url = document.getElementById('cover_url').value;
+
+        if (!rating) {
+          alert('Silakan pilih rating terlebih dahulu!');
+          return;
+        }
+
+        const res = await fetch('/books/new', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title,
+                author,
+                rating,
+                notes,
+                read_date,
+                cover_url
+            })
+        });
+
+        const data = await res.json();
+
+        if(data.status === 'success'){
+            alert(`Buku: ${data.book.title} berhasil ditambahkan!`);
+        } else {
+            alert('Gagal menambahkan buku.');
+        }
+    });
+  </script>
+
+</body>
+</html>
